@@ -8,36 +8,31 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-//Muthu
 var core_1 = require('@angular/core');
 var router_deprecated_1 = require('@angular/router-deprecated');
 var data_service_1 = require('../data/data.service');
-var detail_component_1 = require('../dashboard/detail.component');
-var MuthuComponent = (function () {
-    function MuthuComponent(router, dataService) {
+var DashboardComponent = (function () {
+    function DashboardComponent(router, dataService) {
         this.router = router;
         this.dataService = dataService;
+        this.datas = [];
     }
-    MuthuComponent.prototype.getData = function () {
+    DashboardComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.dataService.getData().then(function (datas) { return _this.datas = datas; });
+        this.dataService.getData().then(function (datas) { return _this.datas = datas.slice(1, 5); });
     };
-    MuthuComponent.prototype.ngOnInit = function () {
-        this.getData();
+    DashboardComponent.prototype.gotoDetail = function (data) {
+        var link = ['Detail', { id: data.id }]; //set a route link parameters array
+        this.router.navigate(link); //pass the array to the router's navigate method.
     };
-    MuthuComponent.prototype.onSelect = function (data) { this.selected = data; };
-    MuthuComponent.prototype.gotoDetail = function () {
-        this.router.navigate(['Detail', { id: this.selected.id }]);
-    };
-    MuthuComponent = __decorate([
+    DashboardComponent = __decorate([
         core_1.Component({
-            selector: 'muthu',
-            template: "\n    <ul class=\"list col-md-4\">\n      <li *ngFor= \"let data of datas\" \n      (click)=\"onSelect(data)\" \n      [class.selected]=\"data === selected\" class=\"bg-primary \">\n\n        <h3><span>{{data.id}}</span> {{data.name}}</h3>\n\n      </li>\n    </ul>\n ",
-            directives: [detail_component_1.DetailComponent]
+            selector: 'my-dashboard',
+            template: "\n  \t\t\t<ul class=\"list col-md-4\">\n\t\t      <li *ngFor= \"let list of datas\" (click)=\"gotoDetail(list)\" class=\"bg-primary \">\n\t\t        <h3>{{list.name}}</h3>\n            \n\t\t      </li>\n\t\t    </ul>\n  "
         }), 
         __metadata('design:paramtypes', [router_deprecated_1.Router, data_service_1.DataService])
-    ], MuthuComponent);
-    return MuthuComponent;
+    ], DashboardComponent);
+    return DashboardComponent;
 }());
-exports.MuthuComponent = MuthuComponent;
-//# sourceMappingURL=muthu.component.js.map
+exports.DashboardComponent = DashboardComponent;
+//# sourceMappingURL=dashboard.component.js.map
